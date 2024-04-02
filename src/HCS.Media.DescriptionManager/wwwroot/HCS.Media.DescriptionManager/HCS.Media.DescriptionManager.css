@@ -3,10 +3,7 @@
 }
 
 .hcs-description-check span.umb-tree-icon:after{
-    content: '' !important;
     display: inline-block;
-    width: 8px;
-    height: 8px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -14,14 +11,13 @@
     position:absolute;
     top: -2px;
     right:-8px;
+    font-size: 0.7rem;
 }
 
-.hcs-description-check.__missing  span.umb-tree-icon:after
-{    
-    background-color: #6e1a00; 
+.hcs-description-check.__missing span.umb-tree-icon:after {
+    content: '⚠️' !important;
 }
 
-.hcs-description-check.__found  span.umb-tree-icon:after
-{    
-    background-color: #116f11; 
+.hcs-description-check.__found span.umb-tree-icon:after {
+    content: '✅' !important;
 }

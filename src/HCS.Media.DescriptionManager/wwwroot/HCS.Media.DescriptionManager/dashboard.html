@@ -34,6 +34,10 @@
                   ng-on-click="vm.save($index)">
                   Save description
                 </uui-button>
+                <uui-button class="btn btn-link" ng-on-click="vm.openMedia($index)">
+                  <umb-icon icon="icon-out"></umb-icon>
+                  <localize key="mediaPicker_openMedia">Open media</localize>
+                </uui-button>
               </div>
             </uui-form>
             <div ng-show="item.updated">

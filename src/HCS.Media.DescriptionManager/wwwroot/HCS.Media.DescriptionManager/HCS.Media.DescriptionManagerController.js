@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    function DescriptionManagerController($scope, $http, mediaHelper, navigationService)
+    function DescriptionManagerController($scope, $http, mediaHelper, navigationService, editorService)
     {
         console.log(Umbraco.Sys.ServerVariables);
         var vm = this;
@@ -27,6 +27,7 @@
         vm.save = save;
         vm.changed = changed;
         vm.isImage = isImageCheck;
+        vm.openMedia = openMedia;
 
         function save($index)
         {
@@ -70,12 +71,20 @@
         }
 
         function isImageCheck(item)
-        {   
+        {
+            var imagePath = item.url.substr(0, item.url.lastIndexOf('?'));
+
             if(item.isImage == undefined)
             {
-                item.isImage = mediaHelper.detectIfImageByExtension(item.url.substr(0, item.url.lastIndexOf('?')));
+                item.isImage = mediaHelper.detectIfImageByExtension(imagePath) || isSVG(imagePath);
             }
             return item.isImage;
+        }
+
+        function isSVG(imagePath) {
+            var lowered = imagePath.toLowerCase();
+            var ext = lowered.substr(lowered.lastIndexOf(".") + 1);
+          return ext == 'svg';
         }
 
         function removeFadeOut(el, speed ) {
@@ -86,10 +95,28 @@
             setTimeout(function() {
                 el.parentNode.removeChild(el);
             }, speed - 5);
-        }
+      }
+
+      function openMedia($index) {
+
+        var item = vm.data.items[$index];
+        if (item == undefined) return;
+
+          const mediaEditor = {
+              id: item.key,
+              submit: () => {
+                  editorService.close();
+              },
+              close: () => {
+                  editorService.close();
+              }
+          };
+                
+          editorService.mediaEditor(mediaEditor);
+      }
     }
 
 
     angular.module("umbraco").controller("hcs.media.DescriptionManagerController",
-        ['$scope', '$http', 'mediaHelper', 'navigationService', DescriptionManagerController]);
+        ['$scope', '$http', 'mediaHelper', 'navigationService', 'editorService', DescriptionManagerController]);
 })();
