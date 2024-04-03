@@ -106,6 +106,8 @@
               id: item.key,
               submit: () => {
                   editorService.close();
+                  vm.load();
+                  navigationService.syncTree({tree: 'media', path: ["-1", String(item.key)], forceReload: true});
               },
               close: () => {
                   editorService.close();
