@@ -16,7 +16,10 @@
         function load()
         { 
             vm.loading = true;
-            vm.data   
+            vm.data = {
+                items:[],
+                total: 0
+            };   
             $http.get(Umbraco.Sys.ServerVariables.HCSMedia.DescriptionApi + "Fetch").then(function (res){
                 vm.data = res.data;
                 vm.loading = false;

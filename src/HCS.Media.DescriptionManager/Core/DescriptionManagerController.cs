@@ -28,10 +28,17 @@ public class DescriptionManagerController : UmbracoAuthorizedApiController
     [HttpGet]
     public async Task<object> Fetch()
     {
-        
-        var items = await _DescriptionManagerService.GetMediaWithMissingDescriptions();
 
-        
+        if (!_memoryCache.TryGetValue(cacheKey, out List<MediaItem> items) || items.Count == 0)
+        {
+            items = await _DescriptionManagerService.GetMediaWithMissingDescriptions();
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+            _memoryCache.Set(cacheKey, items, cacheEntryOptions);
+        }
+
         var total = items.Count;
         var page = items.Take(25).ToList();
 
